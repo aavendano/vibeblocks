@@ -1,11 +1,8 @@
-import pytest
 from dataclasses import dataclass
-from typing import Optional
 from vibeblocks.components.block import Block
 from vibeblocks.components.flow import Flow
 from vibeblocks.utils.schema import generate_function_schema
 from vibeblocks.vibeblocks import VibeBlocks
-from vibeblocks.core.context import ExecutionContext
 
 
 @dataclass

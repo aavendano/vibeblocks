@@ -1,7 +1,6 @@
-import json
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from vibeblocks.core.context import ExecutionContext, Event
+from datetime import datetime
+from vibeblocks.core.context import ExecutionContext
 
 
 @dataclass

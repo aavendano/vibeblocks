@@ -135,7 +135,7 @@ class Flow(Executable[T]):
         for step in self.blocks:
             try:
                 result = step.execute(ctx)
-                if inspect.isawaitable(result):
+                if step.is_async:
                     result = await result
 
                 if isinstance(result, Outcome) and result.status != "SUCCESS":
@@ -149,11 +149,11 @@ class Flow(Executable[T]):
                         continue
                     elif action == "COMPENSATE":
                         res = step.compensate(ctx)
-                        if inspect.isawaitable(res):
+                        if res is not None:
                             await res
 
                         res = self.compensate(ctx)
-                        if inspect.isawaitable(res):
+                        if res is not None:
                             await res
                         if outcome:
                             outcome.duration_ms = (
@@ -175,11 +175,11 @@ class Flow(Executable[T]):
                     continue
                 elif action == "COMPENSATE":
                     res = step.compensate(ctx)
-                    if inspect.isawaitable(res):
+                    if res is not None:
                         await res
 
                     res = self.compensate(ctx)
-                    if inspect.isawaitable(res):
+                    if res is not None:
                         await res
                     if outcome:
                         outcome.duration_ms = (
@@ -207,7 +207,7 @@ class Flow(Executable[T]):
         for step in reversed(self.blocks):
             if self._did_step_succeed(ctx, step):
                 res = step.compensate(ctx)
-                if inspect.isawaitable(res):
+                if res is not None:
                     await res
 
     def _did_step_succeed(self, ctx: ExecutionContext[T], step: Executable[T]) -> bool:
