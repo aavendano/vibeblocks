@@ -1,10 +1,7 @@
 import json
-import dataclasses
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import Any
-import pytest
-from vibeblocks.core.context import ExecutionContext, Event
+from datetime import datetime
+from vibeblocks.core.context import ExecutionContext
 
 # Mock classes for Pydantic v1 and v2
 

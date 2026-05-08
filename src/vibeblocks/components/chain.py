@@ -74,7 +74,7 @@ class Chain(Executable[T]):
         for step in self.blocks:
             try:
                 result = step.execute(ctx)
-                if inspect.isawaitable(result):
+                if step.is_async:
                     result = await result
 
                 if isinstance(result, Outcome):
@@ -112,7 +112,7 @@ class Chain(Executable[T]):
         for step in reversed(self.blocks):
             if self._did_step_succeed(ctx, step):
                 res = step.compensate(ctx)
-                if inspect.isawaitable(res):
+                if res is not None:
                     await res
 
     def _did_step_succeed(self, ctx: ExecutionContext[T], step: Executable[T]) -> bool:
