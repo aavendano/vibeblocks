@@ -18,6 +18,8 @@ T = TypeVar("T")
 _TASK_TIMEOUT_EXECUTOR = concurrent.futures.ThreadPoolExecutor(
     thread_name_prefix="BlockTimeout")
 
+# Default retry policy used to prevent unnecessary object instantiations on block creation.
+_DEFAULT_RETRY_POLICY = RetryPolicy(max_attempts=1)
 
 class Block(Executable[T]):
     """
@@ -37,7 +39,7 @@ class Block(Executable[T]):
         self.name = name
         self.func = func
         self.description = description or func.__doc__
-        self.retry_policy = retry_policy or RetryPolicy(max_attempts=1)
+        self.retry_policy = retry_policy or _DEFAULT_RETRY_POLICY
         self.undo = undo
         self.timeout = timeout
 
